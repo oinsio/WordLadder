@@ -1,6 +1,11 @@
 package net.itspartner;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.*;
+
+import static java.lang.Integer.parseInt;
 
 public class StringTransformationBSF {
 
@@ -13,15 +18,20 @@ public class StringTransformationBSF {
         readInputData();
         validateInputData();
 
-        long now = System.currentTimeMillis();
         for(String word : wordSequence(start, stop, dictionary)) {
             System.out.println(word);
         }
-        System.out.println("Worked " + (System.currentTimeMillis() - now) + " milliseconds.");
     }
 
     // return the shortest sequence from 'beginWord' to 'endWord'
     public static List<String> wordSequence(String beginWord, String endWord, Set<String> dictionary) {
+
+        if (isNeighbor(beginWord, endWord)) {
+            List<String> answer = new ArrayList<String>();
+            answer.add(beginWord);
+            answer.add(endWord);
+            return answer;
+        }
 
 	    /* queueFromBegin is used to traverse the graph from beginWord
 		and queueFromEnd is used to traverse the graph from endWord.
@@ -159,6 +169,17 @@ public class StringTransformationBSF {
                 throw new RuntimeException("Invalid word length in dictionary.");
             }
         }
+    }
+
+    public static void readInputData(File inputData) throws IOException {
+        List<String> allLines = Files.readAllLines(inputData.toPath());
+        int dictionarySize = parseInt(allLines.get(0));
+        dictionary = new HashSet<>();
+        for (int i=1; i<=dictionarySize; i++) {
+            dictionary.add(allLines.get(i));
+        }
+        start = allLines.get(dictionarySize + 1);
+        stop = allLines.get(dictionarySize + 2);
     }
 
     public static class Node {
