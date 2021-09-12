@@ -16,7 +16,6 @@ public class StringTransformationBSF {
     public static void main(String[] args) {
 
         readInputData();
-        validateInputData();
 
         for(String word : wordSequence(start, stop, dictionary)) {
             System.out.println(word);
@@ -158,6 +157,8 @@ public class StringTransformationBSF {
         System.out.println("Dictionary: " + dictionary);
         System.out.println("Start word: " + start);
         System.out.println("Stop word: " + stop);
+
+        validateInputData();
     }
 
     public static void validateInputData() {
@@ -180,6 +181,8 @@ public class StringTransformationBSF {
         }
         start = allLines.get(dictionarySize + 1);
         stop = allLines.get(dictionarySize + 2);
+
+        validateInputData();
     }
 
     public static class Node {
