@@ -1,32 +1,17 @@
-package org;
+package net.itspartner;
 
 import java.util.*;
 
 public class StringTransformationBSF {
 
+    public static Set<String> dictionary;
+    public static String start;
+    public static String stop;
+
     public static void main(String[] args) {
 
-        // Create a Scanner object to read input.
-        Scanner console = new Scanner(System.in);
-
-        // Get dictionary size from the user
-        int dictionarySize;
-        dictionarySize = console.nextInt();
-        console.nextLine();
-
-        String[] dictionaryArray = new String[dictionarySize];
-        for (int i = 0; i < dictionarySize; i++) {
-                dictionaryArray[i] = console.nextLine();
-        }
-
-        Set<String> dictionary = new HashSet<>(Arrays.asList(dictionaryArray));
-
-        String start = console.nextLine();
-        String stop = console.nextLine();
-
-        System.out.println("Dictionary: " + dictionary);
-        System.out.println("Start word: " + start);
-        System.out.println("Stop word: " + stop);
+        readInputData();
+        validateInputData();
 
         long now = System.currentTimeMillis();
         for(String word : wordSequence(start, stop, dictionary)) {
@@ -140,6 +125,40 @@ public class StringTransformationBSF {
         }
         wordSequence.add(node.word);
         return node.parent == null ? wordSequence : wordSequence(node.parent, wordSequence);
+    }
+
+    public static void readInputData() {
+        // Create a Scanner object to read input.
+        Scanner console = new Scanner(System.in);
+
+        // Get dictionary size from the user
+        int dictionarySize;
+        dictionarySize = console.nextInt();
+        console.nextLine();
+
+        String[] dictionaryArray = new String[dictionarySize];
+        for (int i = 0; i < dictionarySize; i++) {
+            dictionaryArray[i] = console.nextLine();
+        }
+
+        dictionary = new HashSet<>(Arrays.asList(dictionaryArray));
+        start = console.nextLine();
+        stop = console.nextLine();
+
+        System.out.println("Dictionary: " + dictionary);
+        System.out.println("Start word: " + start);
+        System.out.println("Stop word: " + stop);
+    }
+
+    public static void validateInputData() {
+
+        int wordLength = start.length();
+        if(start.length() != stop.length()) throw new RuntimeException("Invalid 'stop' word length.");
+        for(String word : dictionary) {
+            if (wordLength != word.length()) {
+                throw new RuntimeException("Invalid word length in dictionary.");
+            }
+        }
     }
 
     public static class Node {
