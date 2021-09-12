@@ -1,4 +1,4 @@
-package net.itspartner
+package cto.fantask
 
 import spock.lang.Specification
 

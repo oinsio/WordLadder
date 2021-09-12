@@ -1,4 +1,4 @@
-package net.itspartner;
+package cto.fantask;
 
 import java.io.File;
 import java.io.IOException;
