@@ -99,4 +99,34 @@ class StringTransformationBSFTest extends Specification {
             outputLength == expectedOutputLength
     }
 
+    def "Test Case 003"() {
+        setup:
+            def inputData = new File(getClass().getResource('/TestCase003.txt').toURI())
+            StringTransformationBSF.readInputData(inputData)
+            println('INPUT Test Case 003')
+            println(StringTransformationBSF.dictionary)
+            println(StringTransformationBSF.start)
+            println(StringTransformationBSF.stop)
+
+        when:
+            long now = System.currentTimeMillis()
+            def output = StringTransformationBSF.wordSequence(StringTransformationBSF.start,
+                StringTransformationBSF.stop, StringTransformationBSF.dictionary)
+            println("Worked " + (System.currentTimeMillis() - now) + " milliseconds.")
+            def outputLength= 0;
+            for (def word : output) {
+                outputLength += word.length() + 1
+            }
+            println('YOUR OUTPUT ' + outputLength + ' chars')
+            for (def line : output) {
+                println(line)
+            }
+
+        then:
+            def expectedOutputLength = 3
+            println('EXPECTED OUTPUT ' + expectedOutputLength + ' chars')
+            println('-1')
+            outputLength == expectedOutputLength
+    }
+
 }
