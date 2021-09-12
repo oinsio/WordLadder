@@ -6,23 +6,33 @@ public class StringTransformationBSF {
 
     public static void main(String[] args) {
 
-        Set<String> dictionary = new HashSet<>();
-        dictionary.add("poon");
-        dictionary.add("plee");
-        dictionary.add("same");
-        dictionary.add("poie");
-        dictionary.add("plie");
-        dictionary.add("poin");
-        dictionary.add("plea");
+        // Create a Scanner object to read input.
+        Scanner console = new Scanner(System.in);
 
-        String start = "toon";
-        String stop = "plea";
-//        String start = "aaaa";
-//        String stop = "aaab";
+        // Get dictionary size from the user
+        int dictionarySize;
+        dictionarySize = console.nextInt();
+        console.nextLine();
 
+        String[] dictionaryArray = new String[dictionarySize];
+        for (int i = 0; i < dictionarySize; i++) {
+                dictionaryArray[i] = console.nextLine();
+        }
+
+        Set<String> dictionary = new HashSet<>(Arrays.asList(dictionaryArray));
+
+        String start = console.nextLine();
+        String stop = console.nextLine();
+
+        System.out.println("Dictionary: " + dictionary);
+        System.out.println("Start word: " + start);
+        System.out.println("Stop word: " + stop);
+
+        long now = System.currentTimeMillis();
         for(String word : wordSequence(start, stop, dictionary)) {
             System.out.println(word);
         }
+        System.out.println("Worked " + (System.currentTimeMillis() - now) + " milliseconds.");
     }
 
     // return the shortest sequence from 'beginWord' to 'endWord'
