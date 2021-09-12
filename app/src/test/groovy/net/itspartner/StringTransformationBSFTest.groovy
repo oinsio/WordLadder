@@ -390,4 +390,202 @@ class StringTransformationBSFTest extends Specification {
             outputLength == expectedOutputLength
     }
 
+    def "Test Case 012"() {
+        setup:
+            def inputData = new File(getClass().getResource('/TestCase012.txt').toURI())
+            StringTransformationBSF.readInputData(inputData)
+            println('INPUT Test Case 012')
+            println(StringTransformationBSF.dictionary)
+            println(StringTransformationBSF.start)
+            println(StringTransformationBSF.stop)
+
+        when:
+            long now = System.currentTimeMillis()
+            def output = StringTransformationBSF.wordSequence(StringTransformationBSF.start,
+                StringTransformationBSF.stop, StringTransformationBSF.dictionary)
+            println("Worked " + (System.currentTimeMillis() - now) + " milliseconds.")
+            def outputLength= 0
+            for (def word : output) {
+                outputLength += word.length() + 1
+            }
+            println('YOUR OUTPUT ' + outputLength + ' chars')
+            for (def line : output) {
+                println(line)
+            }
+
+        then:
+            def expectedOutputLength = 20
+            println('EXPECTED OUTPUT ' + expectedOutputLength + ' chars')
+            println('cat')
+            println('hat')
+            println('hot')
+            println('dot')
+            println('dog')
+            outputLength == expectedOutputLength
+    }
+
+    def "Test Case 013"() {
+        setup:
+            def inputData = new File(getClass().getResource('/TestCase013.txt').toURI())
+            StringTransformationBSF.readInputData(inputData)
+            println('INPUT Test Case 013')
+            println(StringTransformationBSF.dictionary)
+            println(StringTransformationBSF.start)
+            println(StringTransformationBSF.stop)
+
+        when:
+            long now = System.currentTimeMillis()
+            def output = StringTransformationBSF.wordSequence(StringTransformationBSF.start,
+                StringTransformationBSF.stop, StringTransformationBSF.dictionary)
+            println("Worked " + (System.currentTimeMillis() - now) + " milliseconds.")
+            def outputLength= 0
+            for (def word : output) {
+                outputLength += word.length() + 1
+            }
+            println('YOUR OUTPUT ' + outputLength + ' chars')
+            for (def line : output) {
+                println(line)
+            }
+
+        then:
+            def expectedOutputLength = 20
+            println('EXPECTED OUTPUT ' + expectedOutputLength + ' chars')
+            println('eaba')
+            println('baba')
+            println('babe')
+            println('baae')
+            outputLength == expectedOutputLength
+    }
+
+    def "Test Case 014"() {
+        setup:
+            def inputData = new File(getClass().getResource('/TestCase014.txt').toURI())
+            StringTransformationBSF.readInputData(inputData)
+            println('INPUT Test Case 014')
+            println(StringTransformationBSF.dictionary)
+            println(StringTransformationBSF.start)
+            println(StringTransformationBSF.stop)
+
+        when:
+            long now = System.currentTimeMillis()
+            def output = StringTransformationBSF.wordSequence(StringTransformationBSF.start,
+                StringTransformationBSF.stop, StringTransformationBSF.dictionary)
+            println("Worked " + (System.currentTimeMillis() - now) + " milliseconds.")
+            def outputLength= 0
+            for (def word : output) {
+                outputLength += word.length() + 1
+            }
+            println('YOUR OUTPUT ' + outputLength + ' chars')
+            for (def line : output) {
+                println(line)
+            }
+
+        then:
+            def expectedOutputLength = 3
+            println('EXPECTED OUTPUT ' + expectedOutputLength + ' chars')
+            println('-1')
+            outputLength == expectedOutputLength
+    }
+
+    def "Test Case 015"() {
+        setup:
+            def inputData = new File(getClass().getResource('/TestCase015.txt').toURI())
+            StringTransformationBSF.readInputData(inputData)
+            println('INPUT Test Case 015')
+            println(StringTransformationBSF.dictionary)
+            println(StringTransformationBSF.start)
+            println(StringTransformationBSF.stop)
+
+        when:
+            long now = System.currentTimeMillis()
+            def output = StringTransformationBSF.wordSequence(StringTransformationBSF.start,
+                StringTransformationBSF.stop, StringTransformationBSF.dictionary)
+            println("Worked " + (System.currentTimeMillis() - now) + " milliseconds.")
+            def outputLength= 0
+            for (def word : output) {
+                outputLength += word.length() + 1
+            }
+            println('YOUR OUTPUT ' + outputLength + ' chars')
+            for (def line : output) {
+                println(line)
+            }
+
+        then:
+            def expectedOutputLength = 16
+            println('EXPECTED OUTPUT ' + expectedOutputLength + ' chars')
+            println('ecd')
+            println('bcd')
+            println('bad')
+            println('bac')
+            outputLength == expectedOutputLength
+    }
+
+    def "Test Case 016"() {
+        setup:
+            def inputData = new File(getClass().getResource('/TestCase016.txt').toURI())
+            StringTransformationBSF.readInputData(inputData)
+            println('INPUT Test Case 016')
+            println(StringTransformationBSF.dictionary)
+            println(StringTransformationBSF.start)
+            println(StringTransformationBSF.stop)
+
+        when:
+            long now = System.currentTimeMillis()
+            def output = StringTransformationBSF.wordSequence(StringTransformationBSF.start,
+                StringTransformationBSF.stop, StringTransformationBSF.dictionary)
+            println("Worked " + (System.currentTimeMillis() - now) + " milliseconds.")
+            def outputLength= 0
+            for (def word : output) {
+                outputLength += word.length() + 1
+            }
+            println('YOUR OUTPUT ' + outputLength + ' chars')
+            for (def line : output) {
+                println(line)
+            }
+
+        then:
+            def expectedOutputLength = 36
+            println('EXPECTED OUTPUT ' + expectedOutputLength + ' chars')
+            println('eebea')
+            println('ebbea')
+            println('ebbca')
+            println('edbca')
+            println('edbce')
+            println('cdbce')
+            outputLength == expectedOutputLength
+    }
+
+    def "Test Case 017"() {
+        setup:
+            def inputData = new File(getClass().getResource('/TestCase017.txt').toURI())
+            StringTransformationBSF.readInputData(inputData)
+            println('INPUT Test Case 017')
+            println(StringTransformationBSF.dictionary)
+            println(StringTransformationBSF.start)
+            println(StringTransformationBSF.stop)
+
+        when:
+            long now = System.currentTimeMillis()
+            def output = StringTransformationBSF.wordSequence(StringTransformationBSF.start,
+                StringTransformationBSF.stop, StringTransformationBSF.dictionary)
+            println("Worked " + (System.currentTimeMillis() - now) + " milliseconds.")
+            def outputLength= 0
+            for (def word : output) {
+                outputLength += word.length() + 1
+            }
+            println('YOUR OUTPUT ' + outputLength + ' chars')
+            for (def line : output) {
+                println(line)
+            }
+
+        then:
+            def expectedOutputLength = 16
+            println('EXPECTED OUTPUT ' + expectedOutputLength + ' chars')
+            println('abd')
+            println('dbd')
+            println('dad')
+            println('dae')
+            outputLength == expectedOutputLength
+    }
+
 }
