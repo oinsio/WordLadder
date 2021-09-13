@@ -285,9 +285,11 @@ public class StringTransformationBSF {
         start = console.nextLine();
         stop = console.nextLine();
 
+        /*
         System.out.println("Dictionary: " + dictionary);
         System.out.println("Start word: " + start);
         System.out.println("Stop word: " + stop);
+         */
 
         validateInputData();
     }
