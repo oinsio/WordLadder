@@ -14,19 +14,15 @@ If two or more such sequences exist, any one of them is a correct answer. If no 
 
 ### Input:
 
-words = ["cat", "hat", "bad", "had"]
-
-start = "bat"
-
-stop = "had"
+    words = ["cat", "hat", "bad", "had"]
+    start = "bat"
+    stop = "had"
 
 ### Output:
 
-["bat", "bad", "had"]
-
-or 
-
-["bat", "hat", "had"]
+    ["bat", "bad", "had"]
+    or
+    ["bat", "hat", "had"]
 
 ### Solution
 
@@ -44,15 +40,13 @@ From "hat" change character 't' to 'd', so new string will be "had".
 
 ### Input:
 
-words = []
-
-start = bbb
-
-stop = bbc
+    words = []
+    start = bbb
+    stop = bbc
 
 ### Output: 
 
-["bbb", "bbc"]
+    ["bbb", "bbc"]
 
 ### Solution
 
@@ -62,15 +56,15 @@ From "bbb" change the last character 'b' to 'c', so new string will be "bbc".
 
 ### Input:
 
-words = []
-
-start = "zzzzzz"
-
-stop = "zzzzzz"
+    words = []
+    start = "zzzzzz"
+    stop = "zzzzzz"
 
 ### Output: 
 
-["-1"]
+    ["-1"]
+
+### Solution
 
 Function must return an array of strings of length >= 2, where the first string is start and the last string is stop, if the transformation is possible. Else return an array of strings containing only one string "-1", i.e. return ["-1"].
 Here, the words dictionary is empty and ["zzzzzz", "zzzzzz"] is not a valid transformation hence return ["-1"].
@@ -79,19 +73,15 @@ Here, the words dictionary is empty and ["zzzzzz", "zzzzzz"] is not a valid tran
 
 ### Input:
 
-words = ["cccw", "accc", "accw"]
-
-start = "cccc"
-
-stop = "cccc"
+    words = ["cccw", "accc", "accw"]
+    start = "cccc"
+    stop = "cccc"
 
 ### Output:
 
-["cccc", "cccw", "cccc"]
-
-or
-
-["cccc", "accc", "cccc"]
+    ["cccc", "cccw", "cccc"]
+    or
+    ["cccc", "accc", "cccc"]
 
 # Notes
 
@@ -113,22 +103,25 @@ Function must return an array of strings of length >= 2, where the first string 
 
 ## Custom Input
 
-Input Format: The first line of input should contain an integer n, denoting size of input array words. In next n lines, ith line should contain a string words[i], denoting a value at index i of words.
+### Input Format:
+
+The first line of input should contain an integer n, denoting size of input array words. In next n lines, ith line should contain a string words[i], denoting a value at index i of words.
 In next line, there should be a string start, denoting the start string. In next line, there should be a string stop, denoting the stop string. If n = 4, words = ["cat", "hat", "bad", "had"], start = “bat” and stop = “had”, then input should be:
 
-4
-cat
-hat
-bad
-had
-bat
-had
+    4
+    cat
+    hat
+    bad
+    had
+    bat
+    had
 
-Output Format: 
+### Output Format:
+
 Let’s denote the size of ans array as m, where ans is the output string array returned by solution function.
 There will be m lines of output, where ith line contains a string ans[i], denoting a value at index i of ans.
 For input n = 4, words = ["cat", "hat", "bad", "had"], start = “bat” and stop = “had”, output will be:
 
-bat
-hat
-had
+    bat
+    hat
+    had
