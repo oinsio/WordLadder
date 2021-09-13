@@ -60,15 +60,15 @@ public class StringTransformationBSF {
             // Fetch the current node from the destination queue
             Node curr2 = queueFromEnd.remove();
 
+            List<String> answer;
             if (shouldGenerateNeighbors) {
-                List<String> answer = getWordSequenceByNeighborsGeneration(beginWord, endWord,
+                answer = getWordSequenceByNeighborsGeneration(beginWord, endWord,
                     queueFromBegin, queueFromEnd, visitedFromBegin, visitedFromEnd, curr1, curr2);
-                if (answer != null) return answer;
             } else {
-                List<String> answer = getWordSequenceByNeighborsFromDictionary(beginWord, endWord,
+                answer = getWordSequenceByNeighborsFromDictionary(beginWord, endWord,
                     queueFromBegin, queueFromEnd, visitedFromBegin, visitedFromEnd, curr1, curr2);
-                if (answer != null) return answer;
             }
+            if (answer != null) return answer;
         }
         List<String> errorList = new ArrayList<>();
         errorList.add("-1");
