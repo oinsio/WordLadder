@@ -26,7 +26,7 @@ public class StringTransformationBSF {
     public static List<String> wordSequence(String beginWord, String endWord, Set<String> dictionary) {
 
         if (isNeighbor(beginWord, endWord)) {
-            List<String> answer = new ArrayList<String>();
+            List<String> answer = new ArrayList<>();
             answer.add(beginWord);
             answer.add(endWord);
             return answer;
@@ -49,6 +49,8 @@ public class StringTransformationBSF {
         visitedFromEnd.put(endWord, endNode);
         queueFromEnd.add(endNode);
 
+        boolean shouldGenerateNeighbors = dictionary.size() > (start.length() * 26);
+
         while (queueFromBegin.size() > 0 && queueFromEnd.size() > 0) {
 
             // Fetch the current node from the source queue
@@ -57,61 +59,154 @@ public class StringTransformationBSF {
             // Fetch the current node from the destination queue
             Node curr2 = queueFromEnd.remove();
 
-            // Check all the neighbors of curr1
-            for (String wordFromDictionary : dictionary) {
+            if (shouldGenerateNeighbors) {
+                // For each possible character in curr1
+                String word1 = curr1.word;
+                for (int i=0; i<start.length(); i++) {
+                    for (char ch = 'a'; ch <= 'z'; ch++) {
 
-                // If any one of them is neighbor to curr1
-                // and is not present in visitedFromBegin then push it in the queue
-                if (isNeighbor(curr1.word, wordFromDictionary) && !visitedFromBegin.containsKey(wordFromDictionary)) {
+                        // Skip if not any difference
+                        if (ch == word1.charAt(i)) continue;
 
-                    Node temp = new Node(wordFromDictionary, curr1);
-                    queueFromBegin.add(temp);
-                    visitedFromBegin.put(wordFromDictionary, curr1);
+                        // Generate new word
+                        StringBuilder newWord = new StringBuilder(word1);
+                        newWord.setCharAt(i, ch);
+                        String generatedWord = newWord.toString();
 
-                    // If temp is the destination node then return the answer
-                    if (temp.word.equals(endWord)) {
-                        List<String> wordSequence = wordSequence(temp, null);
-                        Collections.reverse(wordSequence);
-                        return wordSequence(temp, null);
+                        // Check if the word is in the dictionary
+                        if (dictionary.contains(generatedWord) && !visitedFromBegin.containsKey(generatedWord)) {
+
+                            Node temp = new Node(generatedWord, curr1);
+                            queueFromBegin.add(temp);
+                            visitedFromBegin.put(generatedWord, curr1);
+
+                            // If temp is the destination node then return the answer
+                            if (temp.word.equals(endWord)) {
+                                List<String> wordSequence = wordSequence(temp, null);
+                                Collections.reverse(wordSequence);
+                                return wordSequence(temp, null);
+                            }
+
+                            // If temp is present in visitedFromEnd sequence from temp to endWord is already found
+                            if (visitedFromEnd.containsKey(temp.word)) {
+                                List<String> wordSequenceHead = wordSequence(temp, null);
+                                Collections.reverse(wordSequenceHead);
+                                List<String> wordSequenceTail = wordSequence(visitedFromEnd.get(temp.word), null);
+                                wordSequenceHead.addAll(wordSequenceTail);
+                                return wordSequenceHead;
+                            }
+                        }
                     }
+                }
 
-                    // If temp is present in visitedFromEnd sequence from temp to endWord is already found
-                    if (visitedFromEnd.containsKey(temp.word)) {
-                        List<String> wordSequenceHead = wordSequence(temp, null);
-                        Collections.reverse(wordSequenceHead);
-                        List<String> wordSequenceTail = wordSequence(visitedFromEnd.get(temp.word), null);
-                        wordSequenceHead.addAll(wordSequenceTail);
-                        return wordSequenceHead;
+                // For each possible character in curr2
+                String word2 = curr2.word;
+                for (int i=0; i<start.length(); i++) {
+                    for (char ch='a'; ch<='z'; ch++) {
+                        // Skip if not any difference
+                        if (ch == word2.charAt(i)) continue;
+
+                        // Generate new word
+                        StringBuilder newWord = new StringBuilder(word2);
+                        newWord.setCharAt(i, ch);
+                        String generatedWord = newWord.toString();
+
+                        // Check if the word is in the dictionary
+                        if (dictionary.contains(generatedWord) && !visitedFromEnd.containsKey(generatedWord)) {
+
+                            Node temp = new Node(generatedWord, curr2);
+                            queueFromEnd.add(temp);
+                            visitedFromEnd.put(generatedWord, curr2);
+
+                            // If temp is the destination node then return the answer
+                            if (temp.word.equals(beginWord)) {
+                                return wordSequence(temp, null);
+                            }
+
+                            // If temp is present in visitedFromBegin sequence from temp to beginWord is already found
+                            if (visitedFromBegin.containsKey(temp.word)) {
+                                List<String> wordSequenceTail = wordSequence(temp, null);
+                                List<String> wordSequenceHead = wordSequence(visitedFromBegin.get(temp.word), null);
+                                Collections.reverse(wordSequenceHead);
+                                wordSequenceHead.addAll(wordSequenceTail);
+                                return wordSequenceHead;
+                            }
+                        }
+                    }
+                }
+
+                for (String visitedHead : visitedFromBegin.keySet()) {
+                    for (String visitedTail : visitedFromEnd.keySet()) {
+                        if (isNeighbor(visitedHead, visitedTail)) {
+                            List<String> wordSequenceTail = wordSequence(visitedFromEnd.get(visitedTail), null);
+                            List<String> wordSequenceHead = wordSequence(visitedFromBegin.get(visitedHead), null);
+                            Collections.reverse(wordSequenceHead);
+                            wordSequenceHead.add(visitedHead);
+                            wordSequenceHead.add(visitedTail);
+                            wordSequenceHead.addAll(wordSequenceTail);
+                            return wordSequenceHead;
+                        }
+                    }
+                }
+
+            } else {
+                // Check all the neighbors of curr1
+                for (String wordFromDictionary : dictionary) {
+
+                    // If any one of them is neighbor to curr1
+                    // and is not present in visitedFromBegin then push it in the queue
+                    if (isNeighbor(curr1.word, wordFromDictionary) && !visitedFromBegin.containsKey(wordFromDictionary)) {
+
+                        Node temp = new Node(wordFromDictionary, curr1);
+                        queueFromBegin.add(temp);
+                        visitedFromBegin.put(wordFromDictionary, curr1);
+
+                        // If temp is the destination node then return the answer
+                        if (temp.word.equals(endWord)) {
+                            List<String> wordSequence = wordSequence(temp, null);
+                            Collections.reverse(wordSequence);
+                            return wordSequence(temp, null);
+                        }
+
+                        // If temp is present in visitedFromEnd sequence from temp to endWord is already found
+                        if (visitedFromEnd.containsKey(temp.word)) {
+                            List<String> wordSequenceHead = wordSequence(temp, null);
+                            Collections.reverse(wordSequenceHead);
+                            List<String> wordSequenceTail = wordSequence(visitedFromEnd.get(temp.word), null);
+                            wordSequenceHead.addAll(wordSequenceTail);
+                            return wordSequenceHead;
+                        }
+                    }
+                }
+
+                // Check all the neighbors of curr2
+                for (String wordFromDictionary : dictionary) {
+
+                    // If any one of them is neighbor to curr2
+                    // and is not present in visitedFromBegin then push it in the queue.
+                    if (isNeighbor(curr2.word, wordFromDictionary) && !visitedFromEnd.containsKey(wordFromDictionary)) {
+
+                        Node temp = new Node(wordFromDictionary, curr2);
+                        queueFromEnd.add(temp);
+                        visitedFromEnd.put(wordFromDictionary, curr2);
+
+                        // If temp is the destination node then return the answer
+                        if (temp.word.equals(beginWord)) {
+                            return wordSequence(temp, null);
+                        }
+
+                        // If temp is present in visitedFromBegin sequence from temp to beginWord is already found
+                        if (visitedFromBegin.containsKey(temp.word)) {
+                            List<String> wordSequenceTail = wordSequence(temp, null);
+                            List<String> wordSequenceHead = wordSequence(visitedFromBegin.get(temp.word), null);
+                            Collections.reverse(wordSequenceHead);
+                            wordSequenceHead.addAll(wordSequenceTail);
+                            return wordSequenceHead;
+                        }
                     }
                 }
             }
 
-            // Check all the neighbors of curr2
-            for (String wordFromDictionary : dictionary) {
-
-                // If any one of them is neighbor to curr2
-                // and is not present in visitedFromBegin then push it in the queue.
-                if (isNeighbor(curr2.word, wordFromDictionary) && !visitedFromEnd.containsKey(wordFromDictionary)) {
-
-                    Node temp = new Node(wordFromDictionary, curr2);
-                    queueFromEnd.add(temp);
-                    visitedFromEnd.put(wordFromDictionary, curr2);
-
-                    // If temp is the destination node then return the answer
-                    if (temp.word.equals(beginWord)) {
-                        return wordSequence(temp, null);
-                    }
-
-                    // If temp is present in visitedFromBegin sequence from temp to beginWord is already found
-                    if (visitedFromBegin.containsKey(temp.word)) {
-                        List<String> wordSequenceTail = wordSequence(temp, null);
-                        List<String> wordSequenceHead = wordSequence(visitedFromBegin.get(temp.word), null);
-                        Collections.reverse(wordSequenceHead);
-                        wordSequenceHead.addAll(wordSequenceTail);
-                        return wordSequenceHead;
-                    }
-                }
-            }
         }
         List<String> errorList = new ArrayList<>();
         errorList.add("-1");
