@@ -94,11 +94,10 @@ public class StringTransformationBSF {
         // Check all the neighbors of curr1
         for (String wordFromDictionary : dictionary) {
 
-            // If any one of them is neighbor to curr1
-            // and is not present in visitedFromBegin then push it in the queue
+            // If any one of them is neighbor to curr1 and is not present in visitedFromBegin then push it in the queue
             if (isNeighbor(curr1.word, wordFromDictionary) && !visitedFromBegin.containsKey(wordFromDictionary)) {
 
-                List<String> answer = saveAndValidateWord(endWord, queueFromBegin, visitedFromBegin, visitedFromEnd, curr1, wordFromDictionary);
+                List<String> answer = saveAndValidateWordFromBegin(endWord, queueFromBegin, visitedFromBegin, visitedFromEnd, curr1, wordFromDictionary);
                 if (answer != null) return answer;
             }
         }
@@ -106,27 +105,11 @@ public class StringTransformationBSF {
         // Check all the neighbors of curr2
         for (String wordFromDictionary : dictionary) {
 
-            // If any one of them is neighbor to curr2
-            // and is not present in visitedFromBegin then push it in the queue.
+            // If any one of them is neighbor to curr2 and is not present in visitedFromBegin then push it in the queue.
             if (isNeighbor(curr2.word, wordFromDictionary) && !visitedFromEnd.containsKey(wordFromDictionary)) {
 
-                Node temp = new Node(wordFromDictionary, curr2);
-                queueFromEnd.add(temp);
-                visitedFromEnd.put(wordFromDictionary, curr2);
-
-                // If temp is the destination node then return the answer
-                if (temp.word.equals(beginWord)) {
-                    return wordSequence(temp, null);
-                }
-
-                // If temp is present in visitedFromBegin sequence from temp to beginWord is already found
-                if (visitedFromBegin.containsKey(temp.word)) {
-                    List<String> wordSequenceTail = wordSequence(temp, null);
-                    List<String> wordSequenceHead = wordSequence(visitedFromBegin.get(temp.word), null);
-                    Collections.reverse(wordSequenceHead);
-                    wordSequenceHead.addAll(wordSequenceTail);
-                    return wordSequenceHead;
-                }
+                List<String> answer = saveAndValidateWordFromEnd(beginWord, queueFromEnd, visitedFromBegin, visitedFromEnd, curr2, wordFromDictionary);
+                if (answer != null) return answer;
             }
         }
         return null;
@@ -159,7 +142,7 @@ public class StringTransformationBSF {
                 // Check if the word is in the dictionary
                 if (dictionary.contains(generatedWord) && !visitedFromBegin.containsKey(generatedWord)) {
 
-                    List<String> answer = saveAndValidateWord(endWord, queueFromBegin, visitedFromBegin, visitedFromEnd, curr1, generatedWord);
+                    List<String> answer = saveAndValidateWordFromBegin(endWord, queueFromBegin, visitedFromBegin, visitedFromEnd, curr1, generatedWord);
                     if (answer != null) return answer;
 
                 }
@@ -181,23 +164,8 @@ public class StringTransformationBSF {
                 // Check if the word is in the dictionary
                 if (dictionary.contains(generatedWord) && !visitedFromEnd.containsKey(generatedWord)) {
 
-                    Node temp = new Node(generatedWord, curr2);
-                    queueFromEnd.add(temp);
-                    visitedFromEnd.put(generatedWord, curr2);
-
-                    // If temp is the destination node then return the answer
-                    if (temp.word.equals(beginWord)) {
-                        return wordSequence(temp, null);
-                    }
-
-                    // If temp is present in visitedFromBegin sequence from temp to beginWord is already found
-                    if (visitedFromBegin.containsKey(temp.word)) {
-                        List<String> wordSequenceTail = wordSequence(temp, null);
-                        List<String> wordSequenceHead = wordSequence(visitedFromBegin.get(temp.word), null);
-                        Collections.reverse(wordSequenceHead);
-                        wordSequenceHead.addAll(wordSequenceTail);
-                        return wordSequenceHead;
-                    }
+                    List<String> answer = saveAndValidateWordFromEnd(beginWord, queueFromEnd, visitedFromBegin, visitedFromEnd, curr2, generatedWord);
+                    if (answer != null) return answer;
                 }
             }
         }
@@ -279,7 +247,7 @@ public class StringTransformationBSF {
         }
     }
 
-    private static List<String> saveAndValidateWord(
+    private static List<String> saveAndValidateWordFromBegin(
         String endWord,
         Queue<Node> queueFromBegin,
         HashMap<String, Node> visitedFromBegin,
@@ -304,6 +272,35 @@ public class StringTransformationBSF {
             List<String> wordSequenceHead = wordSequence(temp, null);
             Collections.reverse(wordSequenceHead);
             List<String> wordSequenceTail = wordSequence(visitedFromEnd.get(temp.word), null);
+            wordSequenceHead.addAll(wordSequenceTail);
+            return wordSequenceHead;
+        }
+        return null;
+    }
+
+    private static List<String> saveAndValidateWordFromEnd(
+        String beginWord,
+        Queue<Node> queueFromEnd,
+        HashMap<String, Node> visitedFromBegin,
+        HashMap<String, Node> visitedFromEnd,
+        Node curr2,
+        String wordToSaveAndCheck
+    ) {
+
+        Node temp = new Node(wordToSaveAndCheck, curr2);
+        queueFromEnd.add(temp);
+        visitedFromEnd.put(wordToSaveAndCheck, curr2);
+
+        // If temp is the destination node then return the answer
+        if (temp.word.equals(beginWord)) {
+            return wordSequence(temp, null);
+        }
+
+        // If temp is present in visitedFromBegin sequence from temp to beginWord is already found
+        if (visitedFromBegin.containsKey(temp.word)) {
+            List<String> wordSequenceTail = wordSequence(temp, null);
+            List<String> wordSequenceHead = wordSequence(visitedFromBegin.get(temp.word), null);
+            Collections.reverse(wordSequenceHead);
             wordSequenceHead.addAll(wordSequenceTail);
             return wordSequenceHead;
         }
