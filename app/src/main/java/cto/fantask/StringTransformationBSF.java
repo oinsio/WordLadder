@@ -62,13 +62,13 @@ public class StringTransformationBSF {
 
             if (shouldGenerateNeighbors) {
 
-                List<String> answer = getWordSequenceByNeigborsGeneration(beginWord, endWord, dictionary,
+                List<String> answer = getWordSequenceByNeighborsGeneration(beginWord, endWord, dictionary,
                     queueFromBegin, queueFromEnd, visitedFromBegin, visitedFromEnd, curr1, curr2);
                 if (answer != null) return answer;
 
             } else {
 
-                List<String> answer = getWordSequenceByNeigborsFromDictionary(beginWord, endWord, dictionary,
+                List<String> answer = getWordSequenceByNeighborsFromDictionary(beginWord, endWord, dictionary,
                     queueFromBegin, queueFromEnd, visitedFromBegin, visitedFromEnd, curr1, curr2);
                 if (answer != null) return answer;
 
@@ -80,7 +80,7 @@ public class StringTransformationBSF {
         return errorList;
     }
 
-    private static List<String> getWordSequenceByNeigborsFromDictionary(
+    private static List<String> getWordSequenceByNeighborsFromDictionary(
         String beginWord,
         String endWord,
         Set<String> dictionary,
@@ -149,7 +149,7 @@ public class StringTransformationBSF {
         return null;
     }
 
-    private static List<String> getWordSequenceByNeigborsGeneration(
+    private static List<String> getWordSequenceByNeighborsGeneration(
         String beginWord,
         String endWord,
         Set<String> dictionary,
@@ -285,12 +285,6 @@ public class StringTransformationBSF {
         start = console.nextLine();
         stop = console.nextLine();
 
-        /*
-        System.out.println("Dictionary: " + dictionary);
-        System.out.println("Start word: " + start);
-        System.out.println("Stop word: " + stop);
-         */
-
         validateInputData();
     }
 
@@ -320,8 +314,8 @@ public class StringTransformationBSF {
 
     public static class Node {
 
-        String word;
-        Node parent;
+        final String word;
+        final Node parent;
 
         public Node(String word, Node parent) {
 
