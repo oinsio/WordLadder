@@ -145,12 +145,10 @@ public class StringTransformationBSF {
         dictionarySize = console.nextInt();
         console.nextLine();
 
-        String[] dictionaryArray = new String[dictionarySize];
+        dictionary = new HashSet<>();
         for (int i = 0; i < dictionarySize; i++) {
-            dictionaryArray[i] = console.nextLine();
+            dictionary.add(console.nextLine());
         }
-
-        dictionary = new HashSet<>(Arrays.asList(dictionaryArray));
         start = console.nextLine();
         stop = console.nextLine();
 
@@ -159,17 +157,6 @@ public class StringTransformationBSF {
         System.out.println("Stop word: " + stop);
 
         validateInputData();
-    }
-
-    public static void validateInputData() {
-
-        int wordLength = start.length();
-        if(start.length() != stop.length()) throw new RuntimeException("Invalid 'stop' word length.");
-        for(String word : dictionary) {
-            if (wordLength != word.length()) {
-                throw new RuntimeException("Invalid word length in dictionary.");
-            }
-        }
     }
 
     public static void readInputData(File inputData) throws IOException {
@@ -183,6 +170,17 @@ public class StringTransformationBSF {
         stop = allLines.get(dictionarySize + 2);
 
         validateInputData();
+    }
+
+    public static void validateInputData() {
+
+        int wordLength = start.length();
+        if(start.length() != stop.length()) throw new RuntimeException("Invalid 'stop' word length.");
+        for(String word : dictionary) {
+            if (wordLength != word.length()) {
+                throw new RuntimeException("Invalid word length in dictionary.");
+            }
+        }
     }
 
     public static class Node {
