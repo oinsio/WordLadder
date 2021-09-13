@@ -17,7 +17,7 @@ public class StringTransformationBSF {
 
         readInputData();
 
-        for(String word : wordSequence(start, stop, dictionary)) {
+        for (String word : wordSequence(start, stop, dictionary)) {
             System.out.println(word);
         }
     }
@@ -32,7 +32,7 @@ public class StringTransformationBSF {
             return answer;
         }
 
-	    /* queueFromBegin is used to traverse the graph from beginWord
+        /* queueFromBegin is used to traverse the graph from beginWord
 		and queueFromEnd is used to traverse the graph from endWord.
 		visitedFromBegin and visitedFromEnd are used to keep track of the
 		visited states from respective directions */
@@ -61,129 +61,18 @@ public class StringTransformationBSF {
             Node curr2 = queueFromEnd.remove();
 
             if (shouldGenerateNeighbors) {
-
-                List<String> answer = getWordSequenceByNeighborsGeneration(beginWord, endWord, dictionary,
+                List<String> answer = getWordSequenceByNeighborsGeneration(beginWord, endWord,
                     queueFromBegin, queueFromEnd, visitedFromBegin, visitedFromEnd, curr1, curr2);
                 if (answer != null) return answer;
-
             } else {
-
-                List<String> answer = getWordSequenceByNeighborsFromDictionary(beginWord, endWord, dictionary,
+                List<String> answer = getWordSequenceByNeighborsFromDictionary(beginWord, endWord,
                     queueFromBegin, queueFromEnd, visitedFromBegin, visitedFromEnd, curr1, curr2);
                 if (answer != null) return answer;
-
             }
-
         }
         List<String> errorList = new ArrayList<>();
         errorList.add("-1");
         return errorList;
-    }
-
-    private static List<String> getWordSequenceByNeighborsFromDictionary(
-        String beginWord,
-        String endWord,
-        Set<String> dictionary,
-        Queue<Node> queueFromBegin,
-        Queue<Node> queueFromEnd,
-        HashMap<String, Node> visitedFromBegin,
-        HashMap<String, Node> visitedFromEnd,
-        Node curr1,
-        Node curr2
-    ) {
-        // Check all the neighbors of curr1
-        for (String wordFromDictionary : dictionary) {
-
-            // If any one of them is neighbor to curr1 and is not present in visitedFromBegin then push it in the queue
-            if (isNeighbor(curr1.word, wordFromDictionary) && !visitedFromBegin.containsKey(wordFromDictionary)) {
-
-                List<String> answer = saveAndValidateWordFromBegin(endWord, queueFromBegin, visitedFromBegin, visitedFromEnd, curr1, wordFromDictionary);
-                if (answer != null) return answer;
-            }
-        }
-
-        // Check all the neighbors of curr2
-        for (String wordFromDictionary : dictionary) {
-
-            // If any one of them is neighbor to curr2 and is not present in visitedFromBegin then push it in the queue.
-            if (isNeighbor(curr2.word, wordFromDictionary) && !visitedFromEnd.containsKey(wordFromDictionary)) {
-
-                List<String> answer = saveAndValidateWordFromEnd(beginWord, queueFromEnd, visitedFromBegin, visitedFromEnd, curr2, wordFromDictionary);
-                if (answer != null) return answer;
-            }
-        }
-        return null;
-    }
-
-    private static List<String> getWordSequenceByNeighborsGeneration(
-        String beginWord,
-        String endWord,
-        Set<String> dictionary,
-        Queue<Node> queueFromBegin,
-        Queue<Node> queueFromEnd,
-        HashMap<String, Node> visitedFromBegin,
-        HashMap<String, Node> visitedFromEnd,
-        Node curr1,
-        Node curr2
-    ) {
-        // For each possible character in curr1
-        String word1 = curr1.word;
-        for (int i=0; i<start.length(); i++) {
-            for (char ch = 'a'; ch <= 'z'; ch++) {
-
-                // Skip if not any difference
-                if (ch == word1.charAt(i)) continue;
-
-                // Generate new word
-                StringBuilder newWord = new StringBuilder(word1);
-                newWord.setCharAt(i, ch);
-                String generatedWord = newWord.toString();
-
-                // Check if the word is in the dictionary
-                if (dictionary.contains(generatedWord) && !visitedFromBegin.containsKey(generatedWord)) {
-
-                    List<String> answer = saveAndValidateWordFromBegin(endWord, queueFromBegin, visitedFromBegin, visitedFromEnd, curr1, generatedWord);
-                    if (answer != null) return answer;
-
-                }
-            }
-        }
-
-        // For each possible character in curr2
-        String word2 = curr2.word;
-        for (int i=0; i<start.length(); i++) {
-            for (char ch='a'; ch<='z'; ch++) {
-                // Skip if not any difference
-                if (ch == word2.charAt(i)) continue;
-
-                // Generate new word
-                StringBuilder newWord = new StringBuilder(word2);
-                newWord.setCharAt(i, ch);
-                String generatedWord = newWord.toString();
-
-                // Check if the word is in the dictionary
-                if (dictionary.contains(generatedWord) && !visitedFromEnd.containsKey(generatedWord)) {
-
-                    List<String> answer = saveAndValidateWordFromEnd(beginWord, queueFromEnd, visitedFromBegin, visitedFromEnd, curr2, generatedWord);
-                    if (answer != null) return answer;
-                }
-            }
-        }
-
-        for (String visitedHead : visitedFromBegin.keySet()) {
-            for (String visitedTail : visitedFromEnd.keySet()) {
-                if (isNeighbor(visitedHead, visitedTail)) {
-                    List<String> wordSequenceTail = wordSequence(visitedFromEnd.get(visitedTail), null);
-                    List<String> wordSequenceHead = wordSequence(visitedFromBegin.get(visitedHead), null);
-                    Collections.reverse(wordSequenceHead);
-                    wordSequenceHead.add(visitedHead);
-                    wordSequenceHead.add(visitedTail);
-                    wordSequenceHead.addAll(wordSequenceTail);
-                    return wordSequenceHead;
-                }
-            }
-        }
-        return null;
     }
 
     public static boolean isNeighbor(String a, String b) {
@@ -197,6 +86,7 @@ public class StringTransformationBSF {
     }
 
     public static List<String> wordSequence(Node node, List<String> wordSequence) {
+
         if (wordSequence == null) {
             wordSequence = new ArrayList<>();
         }
@@ -224,10 +114,11 @@ public class StringTransformationBSF {
     }
 
     public static void readInputData(File inputData) throws IOException {
+
         List<String> allLines = Files.readAllLines(inputData.toPath());
         int dictionarySize = parseInt(allLines.get(0));
         dictionary = new HashSet<>();
-        for (int i=1; i<=dictionarySize; i++) {
+        for (int i = 1; i <= dictionarySize; i++) {
             dictionary.add(allLines.get(i));
         }
         start = allLines.get(dictionarySize + 1);
@@ -239,12 +130,110 @@ public class StringTransformationBSF {
     public static void validateInputData() {
 
         int wordLength = start.length();
-        if(start.length() != stop.length()) throw new RuntimeException("Invalid 'stop' word length.");
-        for(String word : dictionary) {
+        if (start.length() != stop.length()) throw new RuntimeException("Invalid 'stop' word length.");
+        for (String word : dictionary) {
             if (wordLength != word.length()) {
                 throw new RuntimeException("Invalid word length in dictionary.");
             }
         }
+    }
+
+    private static List<String> getWordSequenceByNeighborsFromDictionary(
+        String beginWord,
+        String endWord,
+        Queue<Node> queueFromBegin,
+        Queue<Node> queueFromEnd,
+        HashMap<String, Node> visitedFromBegin,
+        HashMap<String, Node> visitedFromEnd,
+        Node curr1,
+        Node curr2
+    ) {
+        // Check all the neighbors of curr1
+        for (String wordFromDictionary : dictionary) {
+            // If any one of them is neighbor to curr1 and is not present in visitedFromBegin then push it in the queue
+            if (isNeighbor(curr1.word, wordFromDictionary) && !visitedFromBegin.containsKey(wordFromDictionary)) {
+                List<String> answer = saveAndValidateWordFromBegin(endWord, queueFromBegin, visitedFromBegin, visitedFromEnd, curr1, wordFromDictionary);
+                if (answer != null) return answer;
+            }
+        }
+
+        // Check all the neighbors of curr2
+        for (String wordFromDictionary : dictionary) {
+            // If any one of them is neighbor to curr2 and is not present in visitedFromBegin then push it in the queue.
+            if (isNeighbor(curr2.word, wordFromDictionary) && !visitedFromEnd.containsKey(wordFromDictionary)) {
+                List<String> answer = saveAndValidateWordFromEnd(beginWord, queueFromEnd, visitedFromBegin, visitedFromEnd, curr2, wordFromDictionary);
+                if (answer != null) return answer;
+            }
+        }
+        return null;
+    }
+
+    private static List<String> getWordSequenceByNeighborsGeneration(
+        String beginWord,
+        String endWord,
+        Queue<Node> queueFromBegin,
+        Queue<Node> queueFromEnd,
+        HashMap<String, Node> visitedFromBegin,
+        HashMap<String, Node> visitedFromEnd,
+        Node curr1,
+        Node curr2
+    ) {
+        // For each possible character in curr1
+        String word1 = curr1.word;
+        for (int i = 0; i < start.length(); i++) {
+            for (char ch = 'a'; ch <= 'z'; ch++) {
+
+                // Skip if not any difference
+                if (ch == word1.charAt(i)) continue;
+
+                // Generate new word
+                StringBuilder newWord = new StringBuilder(word1);
+                newWord.setCharAt(i, ch);
+                String generatedWord = newWord.toString();
+
+                // Check if the word is in the dictionary
+                if (dictionary.contains(generatedWord) && !visitedFromBegin.containsKey(generatedWord)) {
+
+                    List<String> answer = saveAndValidateWordFromBegin(endWord, queueFromBegin, visitedFromBegin, visitedFromEnd, curr1, generatedWord);
+                    if (answer != null) return answer;
+                }
+            }
+        }
+
+        // For each possible character in curr2
+        String word2 = curr2.word;
+        for (int i = 0; i < start.length(); i++) {
+            for (char ch = 'a'; ch <= 'z'; ch++) {
+                // Skip if not any difference
+                if (ch == word2.charAt(i)) continue;
+                // Generate new word
+                StringBuilder newWord = new StringBuilder(word2);
+                newWord.setCharAt(i, ch);
+                String generatedWord = newWord.toString();
+
+                // Check if the word is in the dictionary
+                if (dictionary.contains(generatedWord) && !visitedFromEnd.containsKey(generatedWord)) {
+                    List<String> answer = saveAndValidateWordFromEnd(beginWord, queueFromEnd, visitedFromBegin, visitedFromEnd, curr2, generatedWord);
+                    if (answer != null) return answer;
+                }
+            }
+        }
+
+        // Check if the word sequence is already found
+        for (String visitedHead : visitedFromBegin.keySet()) {
+            for (String visitedTail : visitedFromEnd.keySet()) {
+                if (isNeighbor(visitedHead, visitedTail)) {
+                    List<String> wordSequenceTail = wordSequence(visitedFromEnd.get(visitedTail), null);
+                    List<String> wordSequenceHead = wordSequence(visitedFromBegin.get(visitedHead), null);
+                    Collections.reverse(wordSequenceHead);
+                    wordSequenceHead.add(visitedHead);
+                    wordSequenceHead.add(visitedTail);
+                    wordSequenceHead.addAll(wordSequenceTail);
+                    return wordSequenceHead;
+                }
+            }
+        }
+        return null;
     }
 
     private static List<String> saveAndValidateWordFromBegin(
