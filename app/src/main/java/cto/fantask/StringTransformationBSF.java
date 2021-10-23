@@ -33,9 +33,9 @@ public class StringTransformationBSF {
         }
 
         /* queueFromBegin is used to traverse the graph from beginWord
-		and queueFromEnd is used to traverse the graph from endWord.
-		visitedFromBegin and visitedFromEnd are used to keep track of the
-		visited states from respective directions */
+	and queueFromEnd is used to traverse the graph from endWord.
+	visitedFromBegin and visitedFromEnd are used to keep track of the
+	visited states from respective directions */
         Queue<Node> queueFromBegin = new LinkedList<>();
         Queue<Node> queueFromEnd = new LinkedList<>();
         HashMap<String, Node> visitedFromBegin = new HashMap<>();
